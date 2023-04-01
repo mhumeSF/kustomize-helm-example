@@ -11,7 +11,7 @@ spec:
     name: in-cluster
   project: default
   source:
-    path: guestbook/overlays/dev
+    path: guestbook/dev
     repoURL: https://github.com/mhumeSF/kustomized-helm-example
     targetRevision: HEAD
     plugin:

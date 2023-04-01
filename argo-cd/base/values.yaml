@@ -13,9 +13,9 @@ argo-cd:
             args:
               - >-
                 if [[ -e "values.yaml" ]]; then
-                  helm template $ARGOCD_APP_NAME ../../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS --values ../../base/values.yaml --values values.yaml > ../../base/all.yaml && kustomize build | argocd-vault-plugin generate -
+                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS --values ../base/values.yaml --values values.yaml > ../base/all.yaml && kustomize build | argocd-vault-plugin generate -
                 else
-                  helm template $ARGOCD_APP_NAME ../../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS --values ../../base/values.yaml > ../../base/all.yaml && kustomize build | argocd-vault-plugin generate -
+                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS --values ../base/values.yaml > ../base/all.yaml && kustomize build | argocd-vault-plugin generate -
                 fi
   repoServer:
     initContainers:
