@@ -1,0 +1,6 @@
+repo-secret.yaml
+
+# Ignore generated files from kustomize bootstrap
+charts
+all.yaml
+
