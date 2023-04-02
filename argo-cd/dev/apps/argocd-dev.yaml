@@ -12,10 +12,10 @@ spec:
   project: default
   source:
     path: argo-cd/dev
-    repoURL: https://github.com/mhumeSF/kustomized-helm-example
+    repoURL: https://github.com/mhumeSF/kustomize-helm-example
     targetRevision: HEAD
     plugin:
-      name: kustomized-helm
+      name: kustomize-helm
   syncPolicy:
     automated:
       prune: true

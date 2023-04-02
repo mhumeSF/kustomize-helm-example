@@ -3,7 +3,21 @@ argo-cd:
     cmp:
       create: true
       plugins:
-        kustomized-helm:
+        kustomize-helm-avp:
+          allowConcurrency: true
+          init:
+            command: ["/bin/sh", "-c"]
+            args: ["helm dependency build ../../base"]
+          generate:
+            command: [sh, -c]
+            args:
+              - >-
+                if [[ -e "values.yaml" ]]; then
+                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS --values ../base/values.yaml --values values.yaml > ../base/all.yaml && kustomize build | argocd-vault-plugin generate -
+                else
+                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS --values ../base/values.yaml > ../base/all.yaml && kustomize build | argocd-vault-plugin generate -
+                fi
+        kustomize-helm:
           allowConcurrency: true
           init:
             command: ["/bin/sh", "-c"]
@@ -35,7 +49,7 @@ argo-cd:
       - mountPath: /custom-tools
         name: custom-tools
     extraContainers:
-    - name: kustomized-helm
+    - name: kustomize-helm-avp
       command: [/var/run/argocd/argocd-cmp-server]
       image: quay.io/argoproj/argocd:v2.6.4
       securityContext:
@@ -48,7 +62,22 @@ argo-cd:
         name: plugins
       # Register plugins into sidecar
       - mountPath: /home/argocd/cmp-server/config/plugin.yaml
-        subPath: kustomized-helm.yaml
+        subPath: kustomize-helm.yaml
+        name: argocd-cmp-cm
+    - name: kustomize-helm
+      command: [/var/run/argocd/argocd-cmp-server]
+      image: quay.io/argoproj/argocd:v2.6.4
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+      volumeMounts:
+      - mountPath: /var/run/argocd
+        name: var-files
+      - mountPath: /home/argocd/cmp-server/plugins
+        name: plugins
+      # Register plugins into sidecar
+      - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+        subPath: kustomize-helm.yaml
         name: argocd-cmp-cm
       # Register argocd-vault-plugin
       - name: custom-tools
