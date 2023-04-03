@@ -7,7 +7,7 @@ argo-cd:
           allowConcurrency: true
           init:
             command: ["/bin/sh", "-c"]
-            args: ["helm dependency build ../../base"]
+            args: ["helm dependency build ../base"]
           generate:
             command: [sh, -c]
             args:
@@ -21,7 +21,7 @@ argo-cd:
           allowConcurrency: true
           init:
             command: ["/bin/sh", "-c"]
-            args: ["helm dependency build ../../base"]
+            args: ["helm dependency build ../base"]
           generate:
             command: [sh, -c]
             args:
