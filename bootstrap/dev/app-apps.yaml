@@ -11,9 +11,7 @@ spec:
     name: in-cluster
   project: default
   source:
-    directory:
-      recurse: true
-      include: "apps/**/dev"
+    path: apps/**/dev
     repoURL: https://github.com/mhumeSF/kustomize-helm-example
     targetRevision: HEAD
     plugin:
