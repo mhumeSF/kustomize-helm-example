@@ -18,4 +18,8 @@ spec:
       name: kustomize-helm
   syncPolicy:
     automated:
+      allowEmpty: true
       prune: true
+      selfHeal: true
+    syncOptions:
+    - allowEmpty=true
