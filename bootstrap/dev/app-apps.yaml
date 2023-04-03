@@ -13,8 +13,7 @@ spec:
   source:
     directory:
       recurse: true
-      include: "**/dev"
-    path: apps
+      include: "apps/**/dev"
     repoURL: https://github.com/mhumeSF/kustomize-helm-example
     targetRevision: HEAD
     plugin:
