@@ -27,9 +27,9 @@ argo-cd:
             args:
               - >-
                 if [[ -e "values.yaml" ]]; then
-                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS --values ../base/values.yaml --values values.yaml > ../base/all.yaml && kustomize build | argocd-vault-plugin generate -
+                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS --values ../base/values.yaml --values values.yaml > ../base/all.yaml && kustomize build
                 else
-                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS --values ../base/values.yaml > ../base/all.yaml && kustomize build | argocd-vault-plugin generate -
+                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS --values ../base/values.yaml > ../base/all.yaml && kustomize build
                 fi
   repoServer:
     initContainers:
@@ -64,6 +64,10 @@ argo-cd:
       - mountPath: /home/argocd/cmp-server/config/plugin.yaml
         subPath: kustomize-helm.yaml
         name: argocd-cmp-cm
+      # Register argocd-vault-plugin
+      - name: custom-tools
+        mountPath: /usr/local/bin/argocd-vault-plugin
+        subPath: argocd-vault-plugin
     - name: kustomize-helm
       command: [/var/run/argocd/argocd-cmp-server]
       image: quay.io/argoproj/argocd:v2.6.4
@@ -79,10 +83,6 @@ argo-cd:
       - mountPath: /home/argocd/cmp-server/config/plugin.yaml
         subPath: kustomize-helm.yaml
         name: argocd-cmp-cm
-      # Register argocd-vault-plugin
-      - name: custom-tools
-        mountPath: /usr/local/bin/argocd-vault-plugin
-        subPath: argocd-vault-plugin
     volumes:
     - name: argocd-cmp-cm
       configMap:
