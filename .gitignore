@@ -4,3 +4,4 @@ repo-secret.yaml
 charts
 all.yaml
 
+Chart.lock
