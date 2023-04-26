@@ -1,75 +1,34 @@
 argo-cd:
+  global:
+    logging:
+      level: debug
   configs:
     cmp:
       create: true
       plugins:
-        kustomize-helm-avp:
-          allowConcurrency: true
-          init:
-            command: ["/bin/sh", "-c"]
-            args: ["helm dependency build ../base"]
-          generate:
-            command: [sh, -c]
-            args:
-              - >-
-                if [[ -e "values.yaml" ]]; then
-                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS --values ../base/values.yaml --values values.yaml > ../base/all.yaml && kustomize build | argocd-vault-plugin generate -
-                else
-                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS --values ../base/values.yaml > ../base/all.yaml && kustomize build | argocd-vault-plugin generate -
-                fi
         kustomize-helm:
           allowConcurrency: true
           init:
-            command: ["/bin/sh", "-c"]
-            args: ["helm dependency build ../base"]
+            command: [sh, -c]
+            args:
+              - >-
+                helm dependency build ../base
           generate:
             command: [sh, -c]
             args:
               - >-
-                if [[ -e "values.yaml" ]]; then
-                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS --values ../base/values.yaml --values values.yaml > ../base/all.yaml && kustomize build
+                if [ -f "values.yaml" ]; then
+                  sleep 180 && helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml -f values.yaml > ../base/all.yaml && kustomize build
                 else
-                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS --values ../base/values.yaml > ../base/all.yaml && kustomize build
+                  sleep 180 && helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml > ../base/all.yaml && kustomize build
                 fi
   repoServer:
-    initContainers:
-    - name: download-tools
-      image: alpine:3
-      command: [sh, -c]
-      env:
-        - name: AVP_VERSION
-          value: "1.7.0"
-      args:
-        - >-
-          wget -O argocd-vault-plugin
-          https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_linux_amd64 &&
-          chmod +x argocd-vault-plugin &&
-          mv argocd-vault-plugin /custom-tools/
-      volumeMounts:
-      - mountPath: /custom-tools
-        name: custom-tools
     extraContainers:
-    - name: kustomize-helm-avp
-      command: [/var/run/argocd/argocd-cmp-server]
-      image: quay.io/argoproj/argocd:v2.6.4
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 999
-      volumeMounts:
-      - mountPath: /var/run/argocd
-        name: var-files
-      - mountPath: /home/argocd/cmp-server/plugins
-        name: plugins
-      # Register plugins into sidecar
-      - mountPath: /home/argocd/cmp-server/config/plugin.yaml
-        subPath: kustomize-helm.yaml
-        name: argocd-cmp-cm
-      # Register argocd-vault-plugin
-      - name: custom-tools
-        mountPath: /usr/local/bin/argocd-vault-plugin
-        subPath: argocd-vault-plugin
     - name: kustomize-helm
       command: [/var/run/argocd/argocd-cmp-server]
+      args:
+      - --loglevel
+      - debug
       image: quay.io/argoproj/argocd:v2.6.4
       securityContext:
         runAsNonRoot: true
@@ -87,9 +46,3 @@ argo-cd:
     - name: argocd-cmp-cm
       configMap:
         name: argocd-cmp-cm
-    - name: custom-tools
-      emptyDir: {}
-    volumeMounts:
-    - name: custom-tools
-      mountPath: /usr/local/bin/argocd-vault-plugin
-      subPath: argocd-vault-plugin
