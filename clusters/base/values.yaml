@@ -18,9 +18,9 @@ argo-cd:
             args:
               - >-
                 if [ -f "values.yaml" ]; then
-                  sleep 180 && helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml -f values.yaml > ../base/all.yaml && kustomize build
+                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml -f values.yaml > ../base/all.yaml && kustomize build
                 else
-                  sleep 180 && helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml > ../base/all.yaml && kustomize build
+                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml > ../base/all.yaml && kustomize build
                 fi
   repoServer:
     extraContainers:
