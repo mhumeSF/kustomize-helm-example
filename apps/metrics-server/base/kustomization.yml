@@ -4,5 +4,7 @@ kind: Kustomization
 commonLabels:
   app.kubernetes.io/managed-by: argocd
 
+namespace: kube-system
+
 resources:
 - all.yaml
