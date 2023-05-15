@@ -12,7 +12,7 @@ argo-cd:
             command: [sh, -c]
             args:
               - >-
-                helm dependency build ../base
+                helm dependency build ../base || true
           generate:
             command: [sh, -c]
             args:
