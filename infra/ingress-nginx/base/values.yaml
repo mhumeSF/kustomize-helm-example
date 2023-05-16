@@ -1,6 +1,8 @@
 ingress-nginx:
   controller:
     ingressClass: nginx
+    service:
+      type: ClusterIP
   admissionWebhooks:
     enabled: false
   hostPort:
