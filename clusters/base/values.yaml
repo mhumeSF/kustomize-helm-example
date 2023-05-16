@@ -23,6 +23,16 @@ argo-cd:
                   helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml > ../base/all.yaml && kustomize build
                 fi
   repoServer:
+    initContainers:
+    - name: download-tools
+      image: alpine:3.17
+      command: [sh, -c]
+      args:
+      - >-
+        cp argocd-vault-plugin /custom-tools/
+      volumeMounts:
+      - mountPath: /custom-tools
+        name: custom-tools
     extraContainers:
     - name: kustomize-helm
       command: [/var/run/argocd/argocd-cmp-server]
@@ -42,6 +52,9 @@ argo-cd:
       - mountPath: /home/argocd/cmp-server/config/plugin.yaml
         subPath: kustomize-helm.yaml
         name: argocd-cmp-cm
+      - name: custom-tools
+        subPath: argocd-vault-plugin
+        mountPath: /usr/local/bin/argocd-vault-plugin
     volumes:
     - name: argocd-cmp-cm
       configMap:
