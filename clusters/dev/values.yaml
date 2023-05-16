@@ -1,4 +1,14 @@
 argo-cd:
+  server:
+    extraArgs:
+    - --insecure
+    ingress:
+      enabled: true
+      annotations:
+        nginx.ingress.kubernetes.io/backend-protocol: "http"
+      ingressClassName: nginx
+      hosts:
+      - "argo.local.dev"
   configs:
     cm:
       users.anonymous.enabled: "true"
@@ -6,3 +16,5 @@ argo-cd:
       policy.default: "role:admin"
     params:
       server.insecure: true
+  dex:
+    enabled: false
