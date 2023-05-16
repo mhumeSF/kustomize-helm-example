@@ -3,4 +3,4 @@ k8s-gateway:
   service:
     type: LoadBalancer
     port: 53
-    nodePort: 5353
+    nodePort: 30053
