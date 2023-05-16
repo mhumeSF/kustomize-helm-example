@@ -59,3 +59,5 @@ argo-cd:
     - name: argocd-cmp-cm
       configMap:
         name: argocd-cmp-cm
+    - name: custom-tools
+      emptyDir: {}
