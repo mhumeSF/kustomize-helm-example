@@ -1,2 +1,6 @@
 k8s-gateway:
   domain: dev.local
+  service:
+    type: LoadBalancer
+    port: 53
+    nodePort: 30053
