@@ -17,7 +17,6 @@ argo-cd:
             command: [sh, -c]
             args:
               - >-
-                env | sort
                 if [ -f "values.yaml" ]; then
                   helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml -f values.yaml > ../base/all.yaml && kustomize build
                 else
