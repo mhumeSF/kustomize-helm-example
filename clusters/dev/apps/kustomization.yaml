@@ -6,3 +6,4 @@ nameSuffix:
 
 resources:
 - apps.yaml
+- infra.yaml
