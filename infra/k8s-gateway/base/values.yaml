@@ -1,5 +1,4 @@
 k8s-gateway:
   service:
     type: NodePort
-    port: 53
     nodePort: 30053
