@@ -2,7 +2,7 @@ ingress-nginx:
   controller:
     ingressClass: nginx
     service:
-      type: ClusterIP
+      type: NodePort
   admissionWebhooks:
     enabled: false
   hostPort:
