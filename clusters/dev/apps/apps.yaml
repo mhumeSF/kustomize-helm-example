@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       name: "{{path[1]}}"
-      namespace: networking
+      namespace: argocd
     spec:
       destination:
         name: in-cluster
