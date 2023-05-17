@@ -9,11 +9,11 @@ spec:
       repoURL: https://github.com/mhumeSF/kustomize-helm-example
       revision: HEAD
       directories:
-      - path: infra/**/dev
+      - path: infra/networking/*/dev
   template:
     metadata:
       name: "{{path[2]}}"
-      namespace: "{{path[1]}}"
+      namespace: networking
     spec:
       destination:
         name: in-cluster
