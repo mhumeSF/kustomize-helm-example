@@ -16,6 +16,9 @@ spec:
     targetRevision: HEAD
     plugin:
       name: kustomize-helm
+      parameters:
+      - name: namespace
+        string: argocd
   syncPolicy:
     automated:
       allowEmpty: true
