@@ -17,7 +17,6 @@ spec:
     spec:
       destination:
         name: in-cluster
-        namespace: default
       project: default
       source:
         path: '{{path}}'
@@ -25,6 +24,9 @@ spec:
         targetRevision: HEAD
         plugin:
           name: kustomize-helm
+          parameters:
+          - name: namespace
+            string: networking
       syncPolicy:
         automated:
           allowEmpty: true

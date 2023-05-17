@@ -11,17 +11,22 @@ argo-cd:
           init:
             command: [sh, -c]
             args:
-              - >-
+              - |
                 helm dependency build ../base || true
           generate:
             command: [sh, -c]
             args:
-              - >-
+              - |
                 if [ -f "values.yaml" ]; then
-                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml -f values.yaml > ../base/all.yaml && kustomize build
+                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml -f values.yaml --namespace $PARAM_NAMESPACE > ../base/all.yaml && kustomize build
                 else
-                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml > ../base/all.yaml && kustomize build
+                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml --namespace $PARAM_NAMESPACE > ../base/all.yaml && kustomize build
                 fi
+          parameters:
+            static:
+            - name: namespace
+              title: namespace
+              string: default
   repoServer:
     initContainers:
     - name: download-tools
