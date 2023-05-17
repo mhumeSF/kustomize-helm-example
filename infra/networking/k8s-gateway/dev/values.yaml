@@ -1,2 +1,3 @@
 k8s-gateway:
   domain: dev.local
+  watchedResources: ["Ingress"]

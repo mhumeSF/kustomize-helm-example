@@ -9,11 +9,11 @@ spec:
       repoURL: https://github.com/mhumeSF/kustomize-helm-example
       revision: HEAD
       directories:
-      - path: infra/*/dev
+      - path: infra/**/dev
   template:
     metadata:
-      name: "{{path[1]}}"
-      namespace: argocd
+      name: "{{path[2]}}"
+      namespace: "{{path[1]}}"
     spec:
       destination:
         name: in-cluster
