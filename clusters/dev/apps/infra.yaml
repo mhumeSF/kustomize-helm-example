@@ -24,6 +24,9 @@ spec:
         targetRevision: HEAD
         plugin:
           name: kustomize-helm
+          parameters:
+          - name: namespace
+            string: networking
       syncPolicy:
         automated:
           allowEmpty: true

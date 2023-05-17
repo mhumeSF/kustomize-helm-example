@@ -18,9 +18,9 @@ argo-cd:
             args:
               - |
                 if [ -f "values.yaml" ]; then
-                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml -f values.yaml --namespace $PARAMS_NAMESPACE > ../base/all.yaml && kustomize build
+                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml -f values.yaml --namespace $PARAM_NAMESPACE > ../base/all.yaml && kustomize build
                 else
-                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml --namespace $PARAMS_NAMESPACE > ../base/all.yaml && kustomize build
+                  helm template $ARGOCD_APP_NAME ../base --include-crds --kube-version $KUBE_VERSION --api-versions $KUBE_API_VERSIONS -f ../base/values.yaml --namespace $PARAM_NAMESPACE > ../base/all.yaml && kustomize build
                 fi
           parameters:
             static:
