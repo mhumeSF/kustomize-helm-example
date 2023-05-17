@@ -8,7 +8,7 @@ argo-cd:
         nginx.ingress.kubernetes.io/backend-protocol: "http"
       ingressClassName: nginx
       hosts:
-      - "argo.local.dev"
+      - "argo.dev.local"
   configs:
     cm:
       users.anonymous.enabled: "true"
