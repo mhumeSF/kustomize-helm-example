@@ -72,3 +72,5 @@ argo-cd:
         name: argocd-cmp-cm
     - name: custom-tools
       emptyDir: {}
+argocd-image-updater:
+  replicaCount: 1
